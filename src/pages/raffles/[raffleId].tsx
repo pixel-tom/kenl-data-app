@@ -42,6 +42,12 @@ const RaffleBuyers: NextPage = () => {
     }
   }, [raffleId]);
 
+  const getTotalTickets = () => {
+    return buyers.reduce((total, buyer) => total + buyer.tickets.length, 0);
+  };
+
+  const getTotalPurchasers = () => buyers.length;
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-6">
       <div className="bg-white p-8 rounded-xl shadow-lg max-w-4xl w-full">
@@ -55,19 +61,26 @@ const RaffleBuyers: NextPage = () => {
         ) : error ? (
           <div className="text-red-500 text-center">{error}</div>
         ) : (
-          <div className="flex flex-col space-y-2 overflow-auto max-h-[50vh] bg-gray-50 p-4 rounded-lg">
-            {buyers.length > 0 ? (
-              buyers.map((buyer) => (
-                <div key={buyer._id} className="flex flex-row justify-between p-4 bg-white rounded-lg shadow">
-                  <h1 className="text-sm font-bold text-gray-800">{buyer.buyer}</h1>
-                  <p className="text-sm text-gray-600">Total Tickets: {buyer.tickets.length}</p>
-                  <p className="text-sm text-gray-600">Purchased on: {new Date(buyer.createdAt).toLocaleDateString()}</p>
-                </div>
-              ))
-            ) : (
-              <p className="text-center text-gray-600">No buyers found for this raffle.</p>
-            )}
-          </div>
+          <>
+            <div className="flex flex-col space-y-2 overflow-auto max-h-[50vh] bg-gray-50 p-4 rounded-lg">
+              {buyers.length > 0 ? (
+                buyers.map((buyer) => (
+                  <div key={buyer._id} className="flex flex-row justify-between p-4 bg-white rounded-lg shadow">
+                    <h1 className="text-sm font-bold text-gray-800">{buyer.buyer}</h1>
+                    <p className="text-sm text-gray-600">Total Tickets: {buyer.tickets.length}</p>
+                    <p className="text-sm text-gray-600">Purchased on: {new Date(buyer.createdAt).toLocaleDateString()}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center text-gray-600">No buyers found for this raffle.</p>
+              )}
+            </div>
+
+            <div className="flex flex-row justify-between items-center p-4 mt-4 bg-gray-100 text-black rounded-lg shadow">
+              <h1 className="text-sm font-bold">Total Purchasers: {getTotalPurchasers()}</h1>
+              <h1 className="text-sm font-bold">Total Tickets Purchased: {getTotalTickets()}</h1>
+            </div>
+          </>
         )}
       </div>
     </div>
